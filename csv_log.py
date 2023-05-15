@@ -16,8 +16,8 @@ class FileHandler(logging.FileHandler):
 
 # csv logging formatter
 class Formatter(logging.Formatter):
-    def __init__(self, delimiter = ';'):
-        super().__init__()
+    def __init__(self, datefmt='%Y-%m-%d %H:%M:%S', delimiter = ';'):
+        super().__init__(datefmt=datefmt)
         self.output = io.StringIO()
         self.writer = csv.writer(self.output, delimiter=delimiter, quoting=csv.QUOTE_MINIMAL)
 

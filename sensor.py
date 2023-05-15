@@ -2,13 +2,13 @@
 import os.path
 
 class BME280:
-    def __init__(self, dir_path, fmt=''):
+    def __init__(self, dir_path, fmt=None):
         # exit if sensor is not acessible
         if not os.path.exists(dir_path):
             raise IOError('The Device is not accessible', dir_path)
         
         #set empty formatstring to default
-        if fmt == '':
+        if not fmt:
             fmt = 'T:{tmp_c:.2f}C,{tmp_f:.2f}F U:{hum_p:d}% r.F p:{prs_p:d}hPa'
         
         self._fmt = fmt

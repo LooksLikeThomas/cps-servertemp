@@ -7,21 +7,25 @@ import time
 import csv_log
 
 def main():
-    bme280 = sensor.BME280('./SensorTest')
-
-    # console formatter
+    # formatting strings
     date_format = '%Y-%m-%d %H:%M:%S'
     console_format = '%(asctime)s - %(name)s - %(msg)s'
+    sensor_str_format = 'Temperatur<{tmp_c:.2f}C,{tmp_f:.2f}F> Luftfeuchtigkeit<{hum_p:d}% r.F> Luftdruck<{prs_p:d}hPa>'
     csv_header = 'Time;Temperature C;Temperatur F;Humidity r.F;Pressure hPA\n'
 
+    # sensor api object
+    bme280 = sensor.BME280('./SensorTest', fmt=sensor_str_format)
+
     # create console loggin handler
-    c_handler = console_handler(console_format, date_format)
+    c_handler = logging.StreamHandler(sys.stdout)
+    c_handler.setFormatter(logging.Formatter(fmt=console_format, datefmt=date_format))
     
     # create csv logging handler
-    f_handler = csv_handler(csv_header)
-
+    f_handler = csv_log.FileHandler('tmp.csv', csv_header=csv_header)
+    f_handler.setFormatter(csv_log.Formatter(datefmt=date_format, delimiter=';'))
+    
     # create logger and set Level
-    logger = logging.getLogger("temp_manager")
+    logger = logging.getLogger("Serverraum_Umweltmanager")
     logger.setLevel(logging.INFO)
     
     # add handlers to logger
@@ -36,30 +40,6 @@ def main():
     except KeyboardInterrupt as e:
         print('Programm Interrupted', e)
         sys.exit(0)
-
-
-def console_handler(fmt, datefmt):
-    # create formatter
-    console_formatter = logging.Formatter(fmt=fmt, datefmt=datefmt)
-
-    # create handler
-    c_handler = logging.StreamHandler(sys.stdout)
-
-    # add formatter to handler and return
-    c_handler.setFormatter(console_formatter)
-    return c_handler
-
-
-def csv_handler(csv_header):
-    # create fromatter
-    csv_formatter = csv_log.Formatter(delimiter=';')
-
-    # create handler
-    f_handler = csv_log.FileHandler('tmp.csv', csv_header=csv_header)
-
-    # add formatter to handler and return
-    f_handler.setFormatter(csv_formatter)
-    return f_handler
 
 if __name__ == '__main__' :
     main()
