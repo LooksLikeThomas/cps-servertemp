@@ -10,8 +10,8 @@ def main():
     # formatting strings
     date_format = '%Y-%m-%d %H:%M:%S'
     console_format = '%(asctime)s - %(name)s - %(msg)s'
-    sensor_str_format = 'Temperatur<{tmp_c:.2f}C,{tmp_f:.2f}F> Luftfeuchtigkeit<{hum_p:d}% r.F> Luftdruck<{prs_p:d}hPa>'
-    csv_header = 'Time;Temperature C;Temperatur F;Humidity r.F;Pressure hPA\n'
+    sensor_str_format = 'Temperatur<{tmp_c:.2f}C,{tmp_f:.2f}F> Luftfeuchtigkeit<{hum_p:.0f}% r.F> Luftdruck<{prs_p:.0f}hPA>'
+    csv_header = 'Time;Temperature C;Temperatur F;Humidity r.F;Pressure kPA\n'
 
     # sensor api object
     bme280 = sensor.BME280('./SensorTest', fmt=sensor_str_format)
